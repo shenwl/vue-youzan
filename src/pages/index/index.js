@@ -9,6 +9,7 @@ import { InfiniteScroll } from 'mint-ui';
 Vue.use(InfiniteScroll);
 
 import FootNav from 'components/FootNav.vue';
+import Swipe from 'components/Swipe.vue';
 
 
 var appIndex = new Vue({
@@ -19,14 +20,22 @@ var appIndex = new Vue({
     pageSize: 6,
     loading: false,
     allLoaded: false,
+    bannerList: null,
   },
   components: {
     FootNav,
+    Swipe,
   },
   created() {
     this.getList()
+    this.getBanner()
   },
   methods: {
+    getBanner() {
+      axios.post(url.banner).then(res => {
+        this.bannerList = res.data.lists;
+      })
+    },
     getList() {
       if(this.allLoaded) { return; }
       this.loading = true;
