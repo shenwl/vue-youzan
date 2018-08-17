@@ -1,13 +1,17 @@
-import Vue from 'vue';
-import axios from 'axios';
-import url from 'js/api.js';
-import { InfiniteScroll } from 'mint-ui';
 import 'css/common.css';
 import './index.css';
 
+import Vue from 'vue';
+import axios from 'axios';
+import url from 'js/api.js';
+
+import { InfiniteScroll } from 'mint-ui';
 Vue.use(InfiniteScroll);
 
-let appIndex = new Vue({
+import FootNav from 'components/FootNav.vue';
+
+
+var appIndex = new Vue({
   el: "#app-index",
   data: {
     list: null,
@@ -15,6 +19,9 @@ let appIndex = new Vue({
     pageSize: 6,
     loading: false,
     allLoaded: false,
+  },
+  components: {
+    FootNav,
   },
   created() {
     this.getList()
@@ -27,7 +34,7 @@ let appIndex = new Vue({
         pageNum: this.pageNum,
         pageSize: this.pageSize,
       }).then(res => {
-        const curList = res.data.lists;
+        var curList = res.data.lists;
         if(curList.length < this.pageSize) {
           this.allLoaded = true;
         }
