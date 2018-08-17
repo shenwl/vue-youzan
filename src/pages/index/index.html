@@ -72,7 +72,12 @@
           </div>
         </div>
         <div class="hot-goods js-waterfull-wrap" data-src="">
-          <ul class="js-list js-lazy" data-src="">
+          <ul class="js-list js-lazy"
+            data-src=""
+            v-infinite-scroll="loadMore"
+            infinite-scroll-disabled="loading"
+            infinite-scroll-distance="10"
+          >
             <li v-for="item in list" :key="item.id">
               <div class="goods-item">
                 <a href="https://h5.youzan.com/v2/showcase/goods?alias=2fwig6rnqfq6m&amp;source=yzapp&amp;f_platform=yzapp">
