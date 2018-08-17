@@ -7,28 +7,37 @@ import './index.css';
 
 Vue.use(InfiniteScroll);
 
-var appIndex = new Vue({
+let appIndex = new Vue({
   el: "#app-index",
   data: {
     list: null,
+    pageNum: 1,
+    pageSize: 6,
+    loading: false,
+    allLoaded: false,
   },
   created() {
-    axios.post(url.hotLists, {
-      pageNum: 1,
-      pageSize: 6,
-    }).then(res => {
-      this.list = res.data.lists;
-    });
+    this.getList()
   },
   methods: {
-    loadMore() {
+    getList() {
+      if(this.allLoaded) { return; }
       this.loading = true;
       axios.post(url.hotLists, {
-        pageNum: 1,
-        pageSize: 6,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
       }).then(res => {
-        this.list = this.list.concat(res.data.lists);
+        const curList = res.data.lists;
+        if(curList.length < this.pageSize) {
+          this.allLoaded = true;
+        }
+        if(this.list) {
+          this.list = this.list.concat(curList);
+        } else {
+          this.list = curList;
+        }
         this.loading = false;
+        this.pageNum++;
       });
     },
   }

@@ -74,7 +74,7 @@
         <div class="hot-goods js-waterfull-wrap" data-src="">
           <ul class="js-list js-lazy"
             data-src=""
-            v-infinite-scroll="loadMore"
+            v-infinite-scroll="getList"
             infinite-scroll-disabled="loading"
             infinite-scroll-distance="10"
           >
@@ -91,7 +91,7 @@
                 </a>
               </div>
           </ul>
-          <div class="loading-more"><span></span></div>
+          <div class="loading-more" v-show="loading"><span></span></div>
         </div>
         <div class="js-show-find category-guid" style="display: none;"></div>
       </div>
