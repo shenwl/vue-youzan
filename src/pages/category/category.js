@@ -39,10 +39,15 @@ var appCategory = new Vue({
         })
       }
     },
-    getRank(id) {
+    getRank() {
       axios.post(url.rank).then(res => {
         this.subData = res.data.data;
       })
+    }
+  },
+  filters: {
+    priceNumber(price) {
+      return parseFloat(price).toFixed(2)
     }
   }
 })
