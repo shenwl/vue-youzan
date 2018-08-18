@@ -57,7 +57,7 @@
                 :data-cid="top.id"
                 v-for="(top, index) in topList"
                 :key="top.id"
-                @click="() => { getSubList(top.id, index) }"
+                @click="() => { getSubList(index, top.id) }"
               >
                 {{top.name}}
               </li>

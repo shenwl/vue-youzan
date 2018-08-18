@@ -12,13 +12,14 @@ var appCategory = new Vue({
   data: {
     topList: null,
     topIndex: 0,
-    subList: null,
+    subData: null,
   },
   components: {
     FootNav,
   },
   created() {
     this.getTopList();
+    this.getSubList(0, 0);
   },
   methods: {
     getTopList() {
@@ -28,8 +29,20 @@ var appCategory = new Vue({
         console.log(e);
       })
     },
-    getSubList(id, index) {
+    getSubList(index, id) {
       this.topIndex = index;
+      if(index === 0) {
+        this.getRank();
+      } else {
+        axios.post(url.subList, {id}).then(res => {
+          this.subData = res.data.data;
+        })
+      }
     },
+    getRank(id) {
+      axios.post(url.rank).then(res => {
+        this.subData = res.data.data;
+      })
+    }
   }
 })
