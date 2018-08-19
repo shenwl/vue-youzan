@@ -1,17 +1,60 @@
 <template>
   <div class="bottom-nav">
     <ul>
-      <li class="active"><a href="index.html"><i class="icon-home"></i><div>有赞</div></a></li>
-      <li><a href="category.html"><i class="icon-category"></i><div>分类</div></a></li>
-      <li><a href="cart.html"><i class="icon-cart"></i><div>购物车</div></a></li>
-      <li><a href="member.html"><i class="icon-user"></i><div>我</div></a></li>
+      <li
+        v-for="(item, index) in list"
+        :key="item.name"
+        :class="{active: curIndex === index}"
+        @click="() => { changeNav(item, index) }"
+      >
+        <a>
+          <i :class="item.icon"></i>
+          <div>{{item.name}}</div>
+        </a>
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
+import qs from 'qs'
+
+var index = qs.parse(window.location.search.substr(1)).index;
+
+var navConfig = [
+  {
+    name: '有赞',
+    icon: 'icon-home',
+    href: 'index.html',
+  },
+  {
+    name: '分类',
+    icon: 'icon-category',
+    href: 'category.html',
+  },
+  {
+    name: '购物车',
+    icon: 'icon-cart',
+    href: 'cart.html',
+  },
+  {
+    name: '我',
+    icon: 'icon-user',
+    href: 'member.html',
+  },
+]
 export default {
-  props: ['list']
+  data() {
+    return {
+      list: navConfig,
+      curIndex: parseInt(index) || 0,
+    }
+  },
+  methods: {
+    changeNav(item, index) {
+      window.location.href = item.href + '?index=' + index
+    }
+  },
 }
 </script>
 
