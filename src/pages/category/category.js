@@ -43,7 +43,10 @@ var appCategory = new Vue({
       axios.post(url.rank).then(res => {
         this.subData = res.data.data;
       })
-    }
+    },
+    toSearch(item) {
+      window.location.href = `search.html?keyword=${item.name}&id=${item.id}`
+    },
   },
   filters: {
     priceNumber(price) {

@@ -130,6 +130,7 @@
                   :data-item-name="brand.name"
                   v-for="(brand, index) of subData.brandList"
                   :key="brand.id"
+                  @click="() => { toSearch(brand) }"
                 >
                   <img :src="brand.img" class="category-img">
                   <span class="category-item-name">{{brand.name}}</span>
@@ -142,6 +143,7 @@
                   :data-item-id="category.id"
                   :data-item-name="category.name"
                   v-for="(category, index) of subData.categoryList"
+                  @click="() => { toSearch(category) }"
                 >
                   <img :src="category.img" :alt="category.name" class="category-img">
                   <span class="category-item-name">{{category.name}}</span>
