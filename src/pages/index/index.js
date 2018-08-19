@@ -8,8 +8,8 @@ import url from 'js/api.js';
 import { InfiniteScroll } from 'mint-ui';
 Vue.use(InfiniteScroll);
 
-import FootNav from 'components/FootNav.vue';
 import Swipe from 'components/Swipe.vue';
+import mixin from 'js/mixin';
 
 
 var appIndex = new Vue({
@@ -23,7 +23,6 @@ var appIndex = new Vue({
     bannerList: null,
   },
   components: {
-    FootNav,
     Swipe,
   },
   created() {
@@ -56,5 +55,6 @@ var appIndex = new Vue({
         this.pageNum++;
       });
     },
-  }
+  },
+  mixins: [mixin],
 })

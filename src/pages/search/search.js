@@ -6,6 +6,8 @@ import axios from 'axios';
 import url from 'js/api';
 import qs from 'qs';
 
+import mixin from 'js/mixin';
+
 var {keyword, id} = qs.parse(window.location.search.substr(1));
 
 var appSearch = new Vue({
@@ -25,9 +27,5 @@ var appSearch = new Vue({
       })
     },
   },
-  filters: {
-    priceNumber(price) {
-      return parseFloat(price).toFixed(2)
-    }
-  }
+  mixins: [mixin],
 })

@@ -5,7 +5,7 @@ import Vue from 'vue';
 import axios from 'axios';
 import url from 'js/api.js';
 
-import FootNav from 'components/FootNav.vue';
+import mixin from 'js/mixin';
 
 var appCategory = new Vue({
   el: '#app-category',
@@ -13,9 +13,6 @@ var appCategory = new Vue({
     topList: null,
     topIndex: 0,
     subData: null,
-  },
-  components: {
-    FootNav,
   },
   created() {
     this.getTopList();
@@ -48,9 +45,5 @@ var appCategory = new Vue({
       window.location.href = `search.html?keyword=${item.name}&id=${item.id}`
     },
   },
-  filters: {
-    priceNumber(price) {
-      return parseFloat(price).toFixed(2)
-    }
-  }
+  mixins: [mixin],
 })
