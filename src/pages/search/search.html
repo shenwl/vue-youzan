@@ -55,7 +55,7 @@
             v-for="(item, index) of searchList"
             :key="item.id"
           >
-            <a href="#">
+            <a :href="'goods.html?id=' + item.id">
               <div class="thumb">
                 <img :src="item.img">
                 <i class="sell-out" v-if="item.isOut"></i>
