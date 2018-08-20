@@ -5,7 +5,8 @@ let url = {
   subList: '/category/subList',
   rank: '/category/rank',
   searchList: '/search/list',
-  goodsDetail: '/goods/details',
+  goodsDetails: '/goods/details',
+  goodsDeal: '/goods/deal'
 }
 
 // 开发环境和真实环境切换
