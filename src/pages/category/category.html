@@ -75,7 +75,7 @@
                   </div>
                   <ul>
                     <li class="goods-item" v-for="(goods, index) in subData.hotGoods" :key="goods.id">
-                      <a :href="'goods.html?id=' + item.id">
+                      <a :href="'goods.html?id=' + goods.id">
                         <div class="thumb badge center-img">
                           <img :src="goods.img">
                           <span class="num">{{index + 1}}</span>
