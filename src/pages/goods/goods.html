@@ -13,10 +13,13 @@
   <link rel="shortcut icon" href="https://b.yzcdn.cn/v2/image/yz_fc.ico">
   <title>商品详情</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <style>
+    [v-cloak] { display: none }
+  </style>
 </head>
 
 <body class="body-fixed-bottom default-theme">
-  <div id="app-goods" v-if="details">
+  <div id="app-goods" v-if="details" v-cloak>
     <div class="container wap-goods internal-purchase" style="min-height: 617px;">
       <div class="content no-sidebar">
         <div class="content-body">
