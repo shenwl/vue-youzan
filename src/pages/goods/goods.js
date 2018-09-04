@@ -32,6 +32,7 @@ var appGoods = new Vue({
     bannerList: null,
     skuType: 1,
     showSku: false,
+    skuNum: 1,
   },
   created() {
     this.getDetails();
@@ -76,6 +77,10 @@ var appGoods = new Vue({
     closeSku() {
       this.showSku = false;
     },
+    changeSkuNum(num) {
+      if(num < 0 && this.skuNum === 1) return;
+      this.skuNum += num;
+    }
   },
   mixins: [mixin],
 })
