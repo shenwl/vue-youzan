@@ -6,7 +6,8 @@ let url = {
   rank: '/category/rank',
   searchList: '/search/list',
   goodsDetails: '/goods/details',
-  goodsDeal: '/goods/deal'
+  goodsDeal: '/goods/deal',
+  addCart: '/cart/add',
 }
 
 // 开发环境和真实环境切换

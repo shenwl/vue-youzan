@@ -33,6 +33,8 @@ var appGoods = new Vue({
     skuType: 1,
     showSku: false,
     skuNum: 1,
+    inCart: false,
+    showAddSuccessMessage: false,
   },
   created() {
     this.getDetails();
@@ -80,7 +82,24 @@ var appGoods = new Vue({
     changeSkuNum(num) {
       if(num < 0 && this.skuNum === 1) return;
       this.skuNum += num;
-    }
+    },
+    addCart() {
+      axios.post(url.addCart, {
+        id: this.id,
+        number: this.skuNum,
+      }).then(res => {
+        console.log(res)
+        if(res.data.status === 200) {
+          this.showSku = false;
+          this.inCart = true;
+          this.showAddSuccessMessage = true;
+
+          setTimeout(() => {
+            this.showAddSuccessMessage = false;
+          }, 1000);
+        }
+      });
+    },
   },
   mixins: [mixin],
 })
