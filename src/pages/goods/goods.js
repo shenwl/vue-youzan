@@ -72,6 +72,9 @@ var appGoods = new Vue({
       this.skuType = type;
       this.showSku = true;
     },
+    closeSku() {
+      this.showSku = false;
+    },
   },
   mixins: [mixin],
 })

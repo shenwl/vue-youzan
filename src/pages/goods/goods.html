@@ -259,7 +259,10 @@
         </div>
       </div>
       <!-- 遮罩层 Mask -->
-      <div id="yFzBKP9GDL" v-show="showSku" style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; transition: none 0.2s ease; opacity: 1;"></div>
+      <div style="height: 100%; position: fixed; top: 0px; left: 0px; right: 0px; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; transition: none 0.2s ease; opacity: 1;"
+           id="yFzBKP9GDL" v-show="showSku"
+           @click="closeSku"
+      ></div>
 
       <!-- 规格确认 Popup-->
       <div id="QfEqtDbeK9" v-show="showSku" class="sku-layout sku-box-shadow popup" style="overflow: hidden; position: absolute; z-index: 1000; background: white; bottom: 0px; left: 0px; right: 0px; visibility: visible; transform: translate3d(0px, 0px, 0px); transition: all 300ms ease; opacity: 1;">
@@ -278,7 +281,7 @@
               <div class="original-price vertical-middle font-size-14 line-through">108</div>
             </div>
           </div>
-          <div class="js-cancel sku-cancel">
+          <div class="js-cancel sku-cancel" @click="closeSku">
             <div class="cancel-img"></div>
           </div>
         </div>
