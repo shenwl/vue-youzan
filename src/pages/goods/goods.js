@@ -11,18 +11,24 @@ import axios from 'axios';
 import mixin from 'js/mixin'
 import qs from 'qs';
 
+import Swipe from 'components/Swipe';
+
 var {id} = qs.parse(window.location.search.substr(1));
 
 var detailTabs = ['商品详情', '本店成交']
 
 var appGoods = new Vue({
   el: '#app-goods',
+  components: {
+    Swipe,
+  },
   data: {
     id: id,
     details: null,
     dealList: null,
     detailTabs: detailTabs,
     tabIndex: 0,
+    bannerList: null,
   },
   created() {
     this.getDetails();
@@ -31,6 +37,13 @@ var appGoods = new Vue({
     getDetails() {
       axios.post(url.goodsDetails, {id}).then(res => {
         this.details = res.data.data;
+        this.bannerList = [];
+        this.details.imgs.forEach(item => {
+          this.bannerList.push({
+            clickUrl: '',
+            img: item,
+          });
+        });
       })
     },
     changeTab(index) {
