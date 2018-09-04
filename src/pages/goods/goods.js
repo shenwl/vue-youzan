@@ -29,9 +29,19 @@ var appGoods = new Vue({
     detailTabs: detailTabs,
     tabIndex: 0,
     bannerList: null,
+    skuType: 1,
+    showSku: false,
   },
   created() {
     this.getDetails();
+  },
+  watch: {
+    showSku(val, oldVal) {
+      document.body.style.overflow = val ? 'hidden' : 'auto'
+      document.body.style.height = val ? '100%' : 'auto'
+      document.querySelector('html').style.overflow = val ? 'hidden' : 'auto'
+      document.querySelector('html').style.height = val ? '100%' : 'auto'
+    },
   },
   methods: {
     getDetails() {
@@ -49,15 +59,19 @@ var appGoods = new Vue({
     changeTab(index) {
       this.tabIndex = index;
       if(index === 1) {
-        this.getDeal()
+        this.getDeal();
       }
     },
     getDeal() {
       axios.post(url.goodsDeal, {id}).then(res => {
-        console.log(res.data.data.lists)
+        console.log(res.data.data.lists);
         this.dealList = res.data.data.lists;
       })
-    }
+    },
+    chooseSku(type) {
+      this.skuType = type;
+      this.showSku = true;
+    },
   },
   mixins: [mixin],
 })
