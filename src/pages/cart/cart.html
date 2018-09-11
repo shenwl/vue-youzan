@@ -21,14 +21,16 @@
 </head>
 
 <body class="body-fixed-bottom">
-  <div id="cart-app" class="container" style="min-height: 581px;" v-cloak>
-    <div class="content clearfix js-page-content">
+  <div id="cart-app" class="container" v-cloak>
+    <div class="content clearfix js-page-content" style="min-height: 581px;">
       <div id="cart-container">
         <div>
           <div class="js-shop-list shop-list">
             <div class="block block-order block-cart" v-for="(shop, shopIndex) of cartList" :key="shop.shopId">
               <div class="header">
-                <div class="select-group js-select-group"><span class="check"></span></div>
+                <div class="select-group js-select-group" @click="selectShop(shop)">
+                  <span :class="{checked: shop.checked}" class="check"></span>
+                </div>
                 <a class="shop-title"><i class="custom-store-img">店铺：</i>{{shop.shopTitle}}</a>
                 <a href="javascript:;" data-type="cart" class="j-edit-list pull-right c-blue font-size-12 edit-list">
                   编辑
@@ -36,13 +38,16 @@
               </div>
               <div>
                 <ul class="js-list block block-list block-list-cart border-0">
-                  <li class="block-item block-item-cart" v-for="(goods, goodsIndex) of shop.goodsList">
+                  <li class="block-item block-item-cart"
+                      v-for="(goods, goodsIndex) of shop.goodsList">
                     <div>
-                      <div class="check-container">
-                        <span class="check"></span>
+                      <div class="check-container" @click="selectGoods(goods)">
+                        <span class="check" :class="{checked: goods.checked}"></span>
                       </div>
                       <div class="name-card clearfix">
-                        <a :href="'goods.html?id=' + goods.id" class="thumb js-goods-link">
+                        <!--:href="'goods.html?id=' + goods.id"-->
+                        <a
+                          class="thumb js-goods-link">
                           <img :src="goods.img">
                         </a>
                         <div class="detail">
@@ -108,31 +113,37 @@
               你需要分开结算每个店铺的商品哦~
             </div>
             <div class="bottom-cart clear-fix">
-              <div class="select-all"><span class="check checked"></span> 全选
+              <div class="select-all"><span class="check"></span> 全选
               </div>
               <!-- 显示状态 -->
               <div class="total-price" style="display: none;">
-                合计：¥<span class="js-total-price" style="color: rgb(255, 102, 0);">684.99</span>
+                合计：¥
+                <span class="js-total-price" style="color: rgb(255, 102, 0);">684.99</span>
                 <p class="c-gray-dark">不含运费</p>
               </div>
-              <button href="javascript:;" class="js-go-pay btn btn-orange-dark font-size-14" style="display: none;">
-                结算 (3)
+              <button href="javascript:;" disabled="disabled"
+                      class="js-go-pay btn btn-orange-dark font-size-14">
+                结算 (0)
               </button>
               <!-- 编辑状态 -->
-              <button href="javascript:;" disabled="disabled" class="j-delete-goods btn font-size-14 btn-red" >删除
-                    </button>
+              <button href="javascript:;"
+                      disabled="disabled"
+                      class="j-delete-goods btn font-size-14 btn-red"
+                      style="display: none;">
+                删除
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="footer" style="min-height: 86px;">
-    <div class="copyright">
-      <div class="ft-copyright " style="background-image: url(https://img.yzcdn.cn/upload_files/2016/11/15/147918630760182374.png);">
-        <a class="yz-logo" href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a> </div>
-    </div>
-  </div>
+  <!--<div class="footer" style="min-height: 86px;">-->
+    <!--<div class="copyright">-->
+      <!--<div class="ft-copyright " style="background-image: url(https://img.yzcdn.cn/upload_files/2016/11/15/147918630760182374.png);">-->
+        <!--<a class="yz-logo" href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a> </div>-->
+    <!--</div>-->
+  <!--</div>-->
 </body>
 
 </html>

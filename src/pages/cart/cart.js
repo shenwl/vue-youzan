@@ -14,8 +14,8 @@ var cartApp = new Vue({
     cartList: null,
   },
   created() {
-    let {getCartList} = this
-    getCartList()
+    let {getCartList} = this;
+    getCartList();
   },
   computed: {
 
@@ -23,9 +23,28 @@ var cartApp = new Vue({
   methods: {
     getCartList() {
       axios.post(url.cartList).then(res => {
-        console.log(res.data.cartList)
-        this.cartList = res.data.cartList
-      })
+        const list = res.data.cartList;
+        list.forEach(shop => {
+          shop.checked = true
+          shop.goodsList.forEach(goods => {
+            goods.checked = true;
+          });
+        });
+        this.cartList = list;
+      });
+    },
+    selectGoods(goods) {
+      goods.checked = !goods.checked;
+    },
+    selectShop(shop) {
+      shop.checked = !shop.checked;
+      this.cartList.forEach(item => {
+        if(shop.shopId === item.shopId) {
+          item.goodsList.forEach(goods => {
+            goods.checked = shop.checked;
+          });
+        }
+      });
     },
   },
   mixins: [mixin],
