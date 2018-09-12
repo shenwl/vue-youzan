@@ -13,6 +13,8 @@ var cartApp = new Vue({
   data: {
     cartList: null,
     totalPrice: 0,
+    editingShop: null,
+    editingShopIndex: -1,
   },
   computed: {
     allSelected: {
@@ -36,20 +38,23 @@ var cartApp = new Vue({
     },
     selectedList() {
       let {cartList} = this;
-      let list = []
-      let totalPrice = 0
+      let list = [];
+      let totalPrice = 0;
       if(cartList && cartList.length) {
         cartList.forEach(shop => {
           shop.goodsList.forEach(goods => {
             if(goods.checked) {
-              list.push(goods)
-              totalPrice += goods.price * goods.number
+              list.push(goods);
+              totalPrice += goods.price * goods.number;
             }
           })
-        })
-        this.totalPrice = totalPrice
+        });
+        this.totalPrice = totalPrice;
       }
-      return list
+      return list;
+    },
+    removeList() {
+
     }
   },
   created() {
@@ -61,9 +66,13 @@ var cartApp = new Vue({
       axios.post(url.cartList).then(res => {
         const list = res.data.cartList;
         list.forEach(shop => {
-          shop.checked = true
+          shop.checked = true;
+          shop.removeChecked = false;
+          shop.editing = false;
+          shop.editMsg = '编辑';
           shop.goodsList.forEach(goods => {
             goods.checked = true;
+            goods.removeChecked = false;
           });
         });
         this.cartList = list;
@@ -80,6 +89,18 @@ var cartApp = new Vue({
     },
     selectAll() {
       this.allSelected = !this.allSelected
+    },
+    editShop(shop, shopIndex) {
+      shop.editing = !shop.editing;
+      shop.editMsg = shop.editing ? '完成' : '编辑';
+      this.cartList.forEach((item, i) => {
+        if(i !== shopIndex) {
+          item.editing = false;
+          item.editMsg = item.editing ? '' : '编辑';
+        }
+      })
+      this.editingShop = shop.editing ? shop : null;
+      this.editingShopIndex = shop.editing ? shopIndex : -1;
     },
   },
   mixins: [mixin],
