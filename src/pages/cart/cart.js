@@ -36,6 +36,33 @@ var cartApp = new Vue({
         })
       }
     },
+    allRemoveSelected: {
+      get() {
+        if(this.editingShop) {
+          return this.editingShop.removeChecked;
+        }
+      },
+      set(newVal) {
+        if(this.editingShop) {
+          this.editingShop.removeChecked = newVal;
+          this.editingShop.goodsList.forEach(goods => {
+            goods.removeChecked = newVal;
+          })
+        }
+      }
+    },
+    removeList() {
+      let {editingShop} = this;
+      let arr = [];
+      if(editingShop) {
+        editingShop.goodsList.forEach(goods => {
+          if(goods.removeChecked) {
+            arr.push(goods);
+          }
+        })
+      }
+      return arr;
+    },
     selectedList() {
       let {cartList} = this;
       let list = [];
@@ -53,9 +80,6 @@ var cartApp = new Vue({
       }
       return list;
     },
-    removeList() {
-
-    }
   },
   created() {
     let {getCartList} = this;
@@ -78,17 +102,23 @@ var cartApp = new Vue({
         this.cartList = list;
       });
     },
-    selectGoods(goods) {
-      goods.checked = !goods.checked;
+    selectGoods(shop, goods) {
+      let attr = this.editingShop ? 'removeChecked' : 'checked';
+      goods[attr] = !goods[attr];
+      shop[attr] = shop.goodsList.every(goods => {
+        return goods[attr]
+      })
     },
     selectShop(shop) {
-      shop.checked = !shop.checked;
+      let attr = this.editingShop ? 'removeChecked' : 'checked';
+      shop[attr] = !shop[attr];
       shop.goodsList.forEach(goods => {
-        goods.checked = shop.checked;
+        goods[attr] = shop[attr];
       });
     },
     selectAll() {
-      this.allSelected = !this.allSelected
+      let attr = this.editingShop ? 'allRemoveSelected' : 'allSelected';
+      this[attr] = !this[attr]
     },
     editShop(shop, shopIndex) {
       shop.editing = !shop.editing;
@@ -101,6 +131,27 @@ var cartApp = new Vue({
       })
       this.editingShop = shop.editing ? shop : null;
       this.editingShopIndex = shop.editing ? shopIndex : -1;
+    },
+    reduceGoods(goods) {
+      if(goods.number === 1) return;
+      axios.post(url.cartReduce, {
+        id: goods.id,
+        number: 1,
+      }).then(res => {
+        if(res.data.status === 200) {
+          goods.number--;
+        }
+      })
+    },
+    addGoods(goods) {
+      axios.post(url.cartAdd, {
+        id: goods.id,
+        number: 1,
+      }).then(res => {
+        if(res.data.status === 200) {
+          goods.number++;
+        }
+      })
     },
   },
   mixins: [mixin],
