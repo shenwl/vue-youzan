@@ -15,6 +15,7 @@ var cartApp = new Vue({
     totalPrice: 0,
     editingShop: null,
     editingShopIndex: -1,
+    showConfirm: false,
   },
   computed: {
     allSelected: {
