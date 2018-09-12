@@ -12,13 +12,49 @@ var cartApp = new Vue({
   el: '#cart-app',
   data: {
     cartList: null,
+    totalPrice: 0,
+  },
+  computed: {
+    allSelected: {
+      get() {
+        let {cartList} = this;
+        if(cartList && cartList.length) {
+          return cartList.every(shop => {
+            return shop.checked;
+          })
+        }
+        return false
+      },
+      set(newVal) {
+        this.cartList.forEach(shop => {
+          shop.checked = newVal;
+          shop.goodsList.forEach(goods => {
+            goods.checked = newVal;
+          })
+        })
+      }
+    },
+    selectedList() {
+      let {cartList} = this;
+      let list = []
+      let totalPrice = 0
+      if(cartList && cartList.length) {
+        cartList.forEach(shop => {
+          shop.goodsList.forEach(goods => {
+            if(goods.checked) {
+              list.push(goods)
+              totalPrice += goods.price * goods.number
+            }
+          })
+        })
+        this.totalPrice = totalPrice
+      }
+      return list
+    }
   },
   created() {
     let {getCartList} = this;
     getCartList();
-  },
-  computed: {
-
   },
   methods: {
     getCartList() {
@@ -38,13 +74,12 @@ var cartApp = new Vue({
     },
     selectShop(shop) {
       shop.checked = !shop.checked;
-      this.cartList.forEach(item => {
-        if(shop.shopId === item.shopId) {
-          item.goodsList.forEach(goods => {
-            goods.checked = shop.checked;
-          });
-        }
+      shop.goodsList.forEach(goods => {
+        goods.checked = shop.checked;
       });
+    },
+    selectAll() {
+      this.allSelected = !this.allSelected
     },
   },
   mixins: [mixin],
