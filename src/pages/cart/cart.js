@@ -15,13 +15,14 @@ var cartApp = new Vue({
     totalPrice: 0,
     editingShop: null,
     editingShopIndex: -1,
-    showConfirm: false,
+    removePopup: false,
+    removeData: null,
   },
   computed: {
     allSelected: {
       get() {
         let {cartList} = this;
-        if(cartList && cartList.length) {
+        if (cartList && cartList.length) {
           return cartList.every(shop => {
             return shop.checked;
           })
@@ -39,12 +40,12 @@ var cartApp = new Vue({
     },
     allRemoveSelected: {
       get() {
-        if(this.editingShop) {
+        if (this.editingShop) {
           return this.editingShop.removeChecked;
         }
       },
       set(newVal) {
-        if(this.editingShop) {
+        if (this.editingShop) {
           this.editingShop.removeChecked = newVal;
           this.editingShop.goodsList.forEach(goods => {
             goods.removeChecked = newVal;
@@ -55,9 +56,9 @@ var cartApp = new Vue({
     removeList() {
       let {editingShop} = this;
       let arr = [];
-      if(editingShop) {
+      if (editingShop) {
         editingShop.goodsList.forEach(goods => {
-          if(goods.removeChecked) {
+          if (goods.removeChecked) {
             arr.push(goods);
           }
         })
@@ -68,10 +69,10 @@ var cartApp = new Vue({
       let {cartList} = this;
       let list = [];
       let totalPrice = 0;
-      if(cartList && cartList.length) {
+      if (cartList && cartList.length) {
         cartList.forEach(shop => {
           shop.goodsList.forEach(goods => {
-            if(goods.checked) {
+            if (goods.checked) {
               list.push(goods);
               totalPrice += goods.price * goods.number;
             }
@@ -125,7 +126,7 @@ var cartApp = new Vue({
       shop.editing = !shop.editing;
       shop.editMsg = shop.editing ? '完成' : '编辑';
       this.cartList.forEach((item, i) => {
-        if(i !== shopIndex) {
+        if (i !== shopIndex) {
           item.editing = false;
           item.editMsg = item.editing ? '' : '编辑';
         }
@@ -134,12 +135,12 @@ var cartApp = new Vue({
       this.editingShopIndex = shop.editing ? shopIndex : -1;
     },
     reduceGoods(goods) {
-      if(goods.number === 1) return;
+      if (goods.number === 1) return;
       axios.post(url.cartReduce, {
         id: goods.id,
         number: 1,
       }).then(res => {
-        if(res.data.status === 200) {
+        if (res.data.status === 200) {
           goods.number--;
         }
       })
@@ -149,11 +150,38 @@ var cartApp = new Vue({
         id: goods.id,
         number: 1,
       }).then(res => {
-        if(res.data.status === 200) {
+        if (res.data.status === 200) {
           goods.number++;
         }
       })
     },
+    removeGoods(shop, goods, shopIndex, goodsIndex) {
+      this.removePopup = true;
+      this.removeData = {
+        shop,
+        goods,
+        shopIndex,
+        goodsIndex,
+      }
+    },
+    removeConfirm() {
+      let {shop, goods, shopIndex, goodsIndex} = this.removeData;
+      axios.post(url.cartRemove, {
+        id: goods.id,
+      }).then(res => {
+        if (res.data.status) {
+          shop.goodsList.splice(goodsIndex, 1);
+          if(!shop.goodsList.length) {
+            this.cartList.splice(shopIndex, 1);
+          }
+          this.removePopup = false;
+        }
+      })
+    },
+    removeCancel() {
+      this.removeData = null;
+      this.removePopup = false;
+    }
   },
   mixins: [mixin],
 })

@@ -661,7 +661,7 @@ only screen and (min-device-pixel-ratio: 1.5) {
 .block-list-cart .block-item-cart .name-card .num button {
   margin: 0;
   width: 40px;
-  height: 30px;
+  height: 18px;
   border: 1px solid #999;
   background-color: #f2f2f2;
   border-radius: 1px

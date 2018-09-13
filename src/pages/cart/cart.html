@@ -82,7 +82,7 @@
                         </div>
                         <div class="error-box"></div>
                       </div>
-                      <div class="delete-btn"><span>删除</span></div>
+                      <div class="delete-btn" @click="removeGoods(shop, goods, shopIndex, goodsIndex)"><span>删除</span></div>
                     </div>
                   </li>
                 </ul>
@@ -108,9 +108,7 @@
                         </p>
                         <div class="num">
                           ×<span class="num-txt">1</span>
-                          <!---->
                         </div>
-                        <!---->
                       </div>
                       <div class="error-box">商品已售罄</div>
                     </div>
@@ -156,17 +154,17 @@
         </div>
       </div>
     </div>
-    <div class="confirm-popup" v-show="showConfirm">
+    <div class="confirm-popup" v-show="removePopup">
         <div class="van-modal" style="z-index: 2006;"></div>
         <div class="van-dialog" style="z-index: 2007;">
           <div class="van-hairline van-dialog__content">
             <div class="van-dialog__message">确定删除所选的1个商品？</div>
           </div>
           <div class="van-dialog__footer van-dialog__footer--buttons">
-            <button class="van-button van-button--default van-button--large van-dialog__cancel">
+            <button @click="removeCancel()" class="van-button van-button--default van-button--large van-dialog__cancel">
               <span class="van-button__text">取消</span>
             </button>
-            <button class="van-button van-button--default van-button--large van-dialog__confirm van-hairline--left">
+            <button @click="removeConfirm()" class="van-button van-button--default van-button--large van-dialog__confirm van-hairline--left">
               <span class="van-button__text">确认</span>
             </button>
           </div>
