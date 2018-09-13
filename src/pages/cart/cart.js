@@ -166,16 +166,26 @@ var cartApp = new Vue({
     },
     removeConfirm() {
       let {shop, goods, shopIndex, goodsIndex} = this.removeData;
+      let {cartList, removeShop} = this;
       axios.post(url.cartRemove, {
         id: goods.id,
       }).then(res => {
         if (res.data.status) {
           shop.goodsList.splice(goodsIndex, 1);
           if(!shop.goodsList.length) {
-            this.cartList.splice(shopIndex, 1);
+            cartList.splice(shopIndex, 1);
+            removeShop()
           }
           this.removePopup = false;
         }
+      })
+    },
+    removeShop() {
+      this.editingShop = null;
+      this.editingShopIndex = -1;
+      this.cartList.forEach(shop => {
+        shop.editing = false;
+        shop.editMsg = '编辑';
       })
     },
     removeCancel() {
