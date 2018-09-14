@@ -21,164 +21,175 @@
 </head>
 
 <body class="body-fixed-bottom">
-  <div id="cart-app" class="container" v-cloak>
-    <div class="content clearfix js-page-content" style="min-height: 581px;">
-      <div id="cart-container">
-        <div>
-          <div class="js-shop-list shop-list">
-            <div class="block block-order block-cart" v-for="(shop, shopIndex) of cartList" :key="shop.shopId">
-              <div class="header">
-                <div class="select-group js-select-group" @click="selectShop(shop)">
-                  <span :class="{checked: editingShop ? shop.removeChecked : shop.checked}" class="check"></span>
-                </div>
-                <a class="shop-title"><i class="custom-store-img">店铺：</i>{{shop.shopTitle}}</a>
-                <a href="javascript:;" data-type="cart"
-                  class="j-edit-list pull-right c-blue font-size-12 edit-list"
-                  @click="editShop(shop, shopIndex)"
-                >
-                  {{shop.editMsg}}
-                </a>
+<div id="cart-app" class="container" v-cloak>
+  <div class="content clearfix js-page-content" style="min-height: 581px;">
+    <div id="cart-container">
+      <div>
+        <div class="js-shop-list shop-list">
+          <div class="block block-order block-cart" v-for="(shop, shopIndex) of cartList" :key="shop.shopId">
+            <div class="header">
+              <div class="select-group js-select-group" @click="selectShop(shop)">
+                <span :class="{checked: editingShop ? shop.removeChecked : shop.checked}" class="check"></span>
               </div>
-              <div>
-                <ul class="js-list block block-list block-list-cart border-0">
-                  <li class="block-item block-item-cart"
-                      :class="{editing: shop.editing}"
-                      v-for="(goods, goodsIndex) of shop.goodsList"
-                  >
-                    <div>
-                      <div class="check-container" @click="selectGoods(shop, goods)">
-                        <span class="check" :class="{checked: editingShop ? goods.removeChecked : goods.checked}"></span>
-                      </div>
-                      <div class="name-card clearfix">
-                        <!--:href="'goods.html?id=' + goods.id"-->
-                        <a
-                          class="thumb js-goods-link">
-                          <img :src="goods.img">
-                        </a>
-                        <div class="detail">
-                          <a class="js-goods-link">
-                            <h3 class="title js-ellipsis">
-                              <i>{{goods.title}}</i>
-                            </h3>
-                          </a>
-                          <p class="sku ellipsis">
-                            {{goods.sku}}
-                          </p>
-                          <!--显示状态-->
-                          <div class="num" v-show="!shop.editing">
-                            ×<span class="num-txt">{{goods.number}}</span>
-                          </div>
-                          <!--编辑状态-->
-                          <div class="num" v-show="shop.editing">
-                            <div class="quantity">
-                              <button type="button" class="minus" :class="{disabled: goods.number === 1}"></button>
-                              <input type="text" pattern="[0-9]*" class="txt" v-model="goods.number">
-                              <button type="button" class="plus"></button>
-                              <div class="response-area response-area-minus" @click="reduceGoods(goods)"></div>
-                              <div class="response-area response-area-plus" @click="addGoods(goods)"></div>
-                            </div>
-                          </div>
-                          <div class="price c-orange">
-                            ¥<span>{{goods.price}}</span></div>
-                        </div>
-                        <div class="error-box"></div>
-                      </div>
-                      <div class="delete-btn" @click="removeGoods(shop, goods, shopIndex, goodsIndex)"><span>删除</span></div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+              <a class="shop-title"><i class="custom-store-img">店铺：</i>{{shop.shopTitle}}</a>
+              <a href="javascript:;" data-type="cart"
+                 class="j-edit-list pull-right c-blue font-size-12 edit-list"
+                 @click="editShop(shop, shopIndex)"
+              >
+                {{shop.editMsg}}
+              </a>
             </div>
-          </div>
-          <div class="js-invalid-goods shop-list">
-            <p class="block invalid-list-title">
-              以下商品无法一起购买
-            </p>
-            <div class="block block-list-cart block-order border-top-0">
-              <ul class="block border-0 invalid-list js-invalid-list">
-                <li class="block-item block-item-cart error">
-                  <div index="0">
-                    <div class="check-container hide"><span class="check"></span></div>
-                    <div class="name-card clearfix">
-                      <a href="https://h5.youzan.com/v2/showcase/goods?alias=36co1k2m80lmu" class="thumb js-goods-link"><img data-src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg!200x200.jpg" class="js-lazy" src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg?imageView2/2/w/200/h/200/q/75/format/webp">
-                        <!---->
-                      </a>
-                      <div class="detail"><a href="https://h5.youzan.com/v2/showcase/goods?alias=36co1k2m80lmu" class="js-goods-link"><h3 class="title js-ellipsis"><i>国际安徒生奖大奖书系（文学作品系列第二辑 共8册） 国际安徒生奖获奖书系 是经过IBBY各国分会和丛书主编、著名儿童文学理论家方卫平教授层层筛选产生的经典佳作</i></h3></a>
-                        <p class="sku ellipsis">
-                          下周二发货
-                        </p>
-                        <div class="num">
-                          ×<span class="num-txt">1</span>
-                        </div>
-                      </div>
-                      <div class="error-box">商品已售罄</div>
+            <div>
+              <ul class="js-list block block-list block-list-cart border-0">
+                <li class="block-item block-item-cart"
+                    :class="{editing: shop.editing}"
+                    v-for="(goods, goodsIndex) of shop.goodsList"
+                    :ref="'goods-' + shopIndex + '-' + goodsIndex"
+                    @touchstart="touchStart($event, goods)"
+                    @touchend="touchEnd($event, shop, goods, shopIndex, goodsIndex)"
+                >
+                  <div>
+                    <div class="check-container" @click="selectGoods(shop, goods)">
+                      <span class="check" :class="{checked: editingShop ? goods.removeChecked : goods.checked}"></span>
                     </div>
-                    <div class="delete-btn"><span>删除</span></div>
+                    <div class="name-card clearfix">
+                      <!--:href="'goods.html?id=' + goods.id"-->
+                      <a
+                        class="thumb js-goods-link">
+                        <img :src="goods.img">
+                      </a>
+                      <div class="detail">
+                        <a class="js-goods-link">
+                          <h3 class="title js-ellipsis">
+                            <i>{{goods.title}}</i>
+                          </h3>
+                        </a>
+                        <p class="sku ellipsis">
+                          {{goods.sku}}
+                        </p>
+                        <!--显示状态-->
+                        <div class="num" v-show="!shop.editing">
+                          ×<span class="num-txt">{{goods.number}}</span>
+                        </div>
+                        <!--编辑状态-->
+                        <div class="num" v-show="shop.editing">
+                          <div class="quantity">
+                            <button type="button" class="minus" :class="{disabled: goods.number === 1}"></button>
+                            <input type="text" pattern="[0-9]*" class="txt" v-model="goods.number">
+                            <button type="button" class="plus"></button>
+                            <div class="response-area response-area-minus" @click="reduceGoods(goods)"></div>
+                            <div class="response-area response-area-plus" @click="addGoods(goods)"></div>
+                          </div>
+                        </div>
+                        <div class="price c-orange">
+                          ¥<span>{{goods.price}}</span></div>
+                      </div>
+                      <div class="error-box"></div>
+                    </div>
+                    <div class="delete-btn" @click="removeGoods(shop, goods, shopIndex, goodsIndex)"><span>删除</span>
+                    </div>
                   </div>
                 </li>
               </ul>
-              <div class="center clear-block">
-                <button class="btn clear-btn js-clear">清空失效商品</button>
-              </div>
             </div>
           </div>
-          <div style="padding:0;" class="js-bottom-opts bottom-fix">
-            <div class="go-shop-tip js-go-shop-tip c-orange font-size-12">
-              你需要分开结算每个店铺的商品哦~
+        </div>
+        <div class="js-invalid-goods shop-list">
+          <p class="block invalid-list-title">
+            以下商品无法一起购买
+          </p>
+          <div class="block block-list-cart block-order border-top-0">
+            <ul class="block border-0 invalid-list js-invalid-list">
+              <li class="block-item block-item-cart error">
+                <div index="0">
+                  <div class="check-container hide"><span class="check"></span></div>
+                  <div class="name-card clearfix">
+                    <a href="https://h5.youzan.com/v2/showcase/goods?alias=36co1k2m80lmu"
+                       class="thumb js-goods-link"><img
+                      data-src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg!200x200.jpg"
+                      class="js-lazy"
+                      src="https://img.yzcdn.cn/upload_files/2017/06/29/FstNOp77JZHQjZIDFd5LlZYE3j_j.jpg?imageView2/2/w/200/h/200/q/75/format/webp">
+                      <!---->
+                    </a>
+                    <div class="detail"><a href="https://h5.youzan.com/v2/showcase/goods?alias=36co1k2m80lmu"
+                                           class="js-goods-link"><h3 class="title js-ellipsis"><i>国际安徒生奖大奖书系（文学作品系列第二辑
+                      共8册） 国际安徒生奖获奖书系 是经过IBBY各国分会和丛书主编、著名儿童文学理论家方卫平教授层层筛选产生的经典佳作</i></h3></a>
+                      <p class="sku ellipsis">
+                        下周二发货
+                      </p>
+                      <div class="num">
+                        ×<span class="num-txt">1</span>
+                      </div>
+                    </div>
+                    <div class="error-box">商品已售罄</div>
+                  </div>
+                  <div class="delete-btn"><span>删除</span></div>
+                </div>
+              </li>
+            </ul>
+            <div class="center clear-block">
+              <button class="btn clear-btn js-clear">清空失效商品</button>
             </div>
-            <div class="bottom-cart clear-fix">
-              <div class="select-all" @click="selectAll()">
-                <span class="check" :class="{checked: editingShop ? allRemoveSelected : allSelected}"></span> 全选
-              </div>
-              <!-- 显示状态 -->
-              <div class="total-price" v-show="!editingShop">
-                合计：¥
-                <span class="js-total-price" style="color: rgb(255, 102, 0);">{{totalPrice | priceNumber}}</span>
-                <p class="c-gray-dark">不含运费</p>
-              </div>
-              <button href="javascript:;" :disabled="!selectedList.length"
-                class="js-go-pay btn btn-orange-dark font-size-14"
-                v-show="!editingShop"
-              >
-                结算 ({{selectedList.length}})
-              </button>
-              <!-- 编辑状态 -->
-              <button href="javascript:;"
-                :disabled="removeList.length === 0"
-                class="j-delete-goods btn font-size-14 btn-red"
-                v-show="editingShop"
-                @click="removeGoodsList()"
-              >
-                删除
-              </button>
+          </div>
+        </div>
+        <div style="padding:0;" class="js-bottom-opts bottom-fix">
+          <div class="go-shop-tip js-go-shop-tip c-orange font-size-12">
+            你需要分开结算每个店铺的商品哦~
+          </div>
+          <div class="bottom-cart clear-fix">
+            <div class="select-all" @click="selectAll()">
+              <span class="check" :class="{checked: editingShop ? allRemoveSelected : allSelected}"></span> 全选
             </div>
+            <!-- 显示状态 -->
+            <div class="total-price" v-show="!editingShop">
+              合计：¥
+              <span class="js-total-price" style="color: rgb(255, 102, 0);">{{totalPrice | priceNumber}}</span>
+              <p class="c-gray-dark">不含运费</p>
+            </div>
+            <button href="javascript:;" :disabled="!selectedList.length"
+                    class="js-go-pay btn btn-orange-dark font-size-14"
+                    v-show="!editingShop"
+            >
+              结算 ({{selectedList.length}})
+            </button>
+            <!-- 编辑状态 -->
+            <button href="javascript:;"
+                    :disabled="removeList.length === 0"
+                    class="j-delete-goods btn font-size-14 btn-red"
+                    v-show="editingShop"
+                    @click="removeGoodsList()"
+            >
+              删除
+            </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="confirm-popup" v-show="removePopup">
-        <div class="van-modal" style="z-index: 2006;"></div>
-        <div class="van-dialog" style="z-index: 2007;">
-          <div class="van-hairline van-dialog__content">
-            <div class="van-dialog__message">{{removeMsg}}</div>
-          </div>
-          <div class="van-dialog__footer van-dialog__footer--buttons">
-            <button @click="removeCancel()" class="van-button van-button--default van-button--large van-dialog__cancel">
-              <span class="van-button__text">取消</span>
-            </button>
-            <button @click="removeConfirm()" class="van-button van-button--default van-button--large van-dialog__confirm van-hairline--left">
-              <span class="van-button__text">确认</span>
-            </button>
-          </div>
-        </div>
+  </div>
+  <div class="confirm-popup" v-show="removePopup">
+    <div class="van-modal" style="z-index: 2006;"></div>
+    <div class="van-dialog" style="z-index: 2007;">
+      <div class="van-hairline van-dialog__content">
+        <div class="van-dialog__message">{{removeMsg}}</div>
+      </div>
+      <div class="van-dialog__footer van-dialog__footer--buttons">
+        <button @click="removeCancel()" class="van-button van-button--default van-button--large van-dialog__cancel">
+          <span class="van-button__text">取消</span>
+        </button>
+        <button @click="removeConfirm()"
+                class="van-button van-button--default van-button--large van-dialog__confirm van-hairline--left">
+          <span class="van-button__text">确认</span>
+        </button>
+      </div>
     </div>
   </div>
-  <!--<div class="footer" style="min-height: 86px;">-->
-    <!--<div class="copyright">-->
-      <!--<div class="ft-copyright " style="background-image: url(https://img.yzcdn.cn/upload_files/2016/11/15/147918630760182374.png);">-->
-        <!--<a class="yz-logo" href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a> </div>-->
-    <!--</div>-->
-  <!--</div>-->
+</div>
+<!--<div class="footer" style="min-height: 86px;">-->
+<!--<div class="copyright">-->
+<!--<div class="ft-copyright " style="background-image: url(https://img.yzcdn.cn/upload_files/2016/11/15/147918630760182374.png);">-->
+<!--<a class="yz-logo" href="https://www.youzan.com/?from_source=support_logo">有赞提供技术支持</a> </div>-->
+<!--</div>-->
+<!--</div>-->
 </body>
 
 </html>

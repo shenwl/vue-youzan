@@ -8,6 +8,8 @@ import axios from 'axios';
 import mixin from 'js/mixin'
 import url from 'js/api';
 
+import Velocity from 'velocity-animate';
+
 var cartApp = new Vue({
   el: '#cart-app',
   data: {
@@ -228,6 +230,22 @@ var cartApp = new Vue({
     removeCancel() {
       this.removeData = null;
       this.removePopup = false;
+    },
+    touchStart(e, goods) {
+      goods.startX = e.changedTouches[0].clientX;
+    },
+    touchEnd(e, shop, goods, shopIndex, goodsIndex) {
+      let endX = e.changedTouches[0].clientX;
+      let left = '0px';
+      if(goods.startX - endX > 80) {
+        left = '-60px';
+      } else if(endX - goods.startX  > 80) {
+        left = '0px';
+      }
+      let goodsNode = this.$refs[`goods-${shopIndex}-${goodsIndex}`];
+      Velocity(goodsNode, {
+        left,
+      });
     }
   },
   mixins: [mixin],
