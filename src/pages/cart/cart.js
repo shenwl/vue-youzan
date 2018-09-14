@@ -16,6 +16,7 @@ var cartApp = new Vue({
     editingShop: null,
     editingShopIndex: -1,
     removePopup: false,
+    removeMsg: '',
     removeData: null,
   },
   computed: {
@@ -43,6 +44,7 @@ var cartApp = new Vue({
         if (this.editingShop) {
           return this.editingShop.removeChecked;
         }
+        return false;
       },
       set(newVal) {
         if (this.editingShop) {
@@ -157,6 +159,7 @@ var cartApp = new Vue({
     },
     removeGoods(shop, goods, shopIndex, goodsIndex) {
       this.removePopup = true;
+      this.removeMsg = '确定要删除该商品吗？';
       this.removeData = {
         shop,
         goods,
@@ -164,21 +167,55 @@ var cartApp = new Vue({
         goodsIndex,
       }
     },
+    removeGoodsList() {
+      this.removePopup = true;
+      this.removeMsg = `确定要删除所选的${this.removeList.length}个商品吗？`;
+    },
     removeConfirm() {
-      let {shop, goods, shopIndex, goodsIndex} = this.removeData;
-      let {cartList, removeShop} = this;
-      axios.post(url.cartRemove, {
-        id: goods.id,
-      }).then(res => {
-        if (res.data.status) {
-          shop.goodsList.splice(goodsIndex, 1);
-          if(!shop.goodsList.length) {
-            cartList.splice(shopIndex, 1);
-            removeShop()
+      let {removeMsg, cartList, removeList, removeShop} = this;
+      if(removeMsg === '确定要删除该商品吗？') {
+        let {shop, goods, shopIndex, goodsIndex} = this.removeData;
+        axios.post(url.cartRemove, {
+          id: goods.id,
+        }).then(res => {
+          console.log(res)
+          if (res.data.status === 200) {
+            shop.goodsList.splice(goodsIndex, 1);
+            if(!shop.goodsList.length) {
+              cartList.splice(shopIndex, 1);
+              removeShop()
+            }
+            this.removePopup = false;
           }
-          this.removePopup = false;
-        }
-      })
+        })
+      } else {
+        let ids = [];
+        removeList.forEach(goods => {
+          ids.push(goods.id);
+        })
+        axios.post(url.cartRemove, {
+          ids
+        }).then(res => {
+          if(res.data.status === 200) {
+            let arr = [];
+            this.editingShop.goodsList.forEach(goods => {
+              let index = removeList.findIndex(item => {
+                return item.id === goods.id;
+              })
+              if(index === -1) {
+                arr.push(goods);
+              }
+            });
+            if(arr.length) {
+              this.editingShop.goodsList = arr;
+            } else {
+              this.cartList.splice(this.editingShopIndex, 1);
+              this.removeShop();
+            }
+            this.removePopup = false;
+          }
+        })
+      }
     },
     removeShop() {
       this.editingShop = null;

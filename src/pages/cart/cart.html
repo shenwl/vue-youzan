@@ -43,7 +43,8 @@
                 <ul class="js-list block block-list block-list-cart border-0">
                   <li class="block-item block-item-cart"
                       :class="{editing: shop.editing}"
-                      v-for="(goods, goodsIndex) of shop.goodsList">
+                      v-for="(goods, goodsIndex) of shop.goodsList"
+                  >
                     <div>
                       <div class="check-container" @click="selectGoods(shop, goods)">
                         <span class="check" :class="{checked: editingShop ? goods.removeChecked : goods.checked}"></span>
@@ -146,6 +147,7 @@
                 :disabled="removeList.length === 0"
                 class="j-delete-goods btn font-size-14 btn-red"
                 v-show="editingShop"
+                @click="removeGoodsList()"
               >
                 删除
               </button>
@@ -158,7 +160,7 @@
         <div class="van-modal" style="z-index: 2006;"></div>
         <div class="van-dialog" style="z-index: 2007;">
           <div class="van-hairline van-dialog__content">
-            <div class="van-dialog__message">确定删除所选的1个商品？</div>
+            <div class="van-dialog__message">{{removeMsg}}</div>
           </div>
           <div class="van-dialog__footer van-dialog__footer--buttons">
             <button @click="removeCancel()" class="van-button van-button--default van-button--large van-dialog__cancel">
