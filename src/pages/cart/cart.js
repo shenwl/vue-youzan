@@ -176,11 +176,7 @@ new Vue({
           this.removePopup = false;
         });
       } else {
-        let ids = [];
-        removeList.forEach(goods => {
-          ids.push(goods.id);
-        });
-        Cart.mrremove(ids).then(res => {
+        Cart.mrremove(removeList).then(res => {
           let arr = [];
           this.editingShop.goodsList.forEach(goods => {
             let index = removeList.findIndex(item => {

@@ -23,7 +23,11 @@ export default class {
       id: id,
     });
   }
-  static mrremove(ids) {
+  static mrremove(goodsList) {
+    let ids = [];
+    goodsList.forEach(goods => {
+      ids.push(goods.id);
+    });
     return fetch(url.cartMrremove, 'post', {
       ids: ids,
     });
