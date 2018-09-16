@@ -9,7 +9,7 @@ import Cart from 'js/cartService';
 
 import Velocity from 'velocity-animate';
 
-var cartApp = new Vue({
+new Vue({
   el: '#cart-app',
   data: {
     cartList: null,
@@ -180,12 +180,12 @@ var cartApp = new Vue({
         removeList.forEach(goods => {
           ids.push(goods.id);
         });
-        Cart.remove(ids).then(res => {
+        Cart.mrremove(ids).then(res => {
           let arr = [];
           this.editingShop.goodsList.forEach(goods => {
             let index = removeList.findIndex(item => {
               return item.id === goods.id;
-            })
+            });
             if(index === -1) {
               arr.push(goods);
             }
@@ -230,4 +230,4 @@ var cartApp = new Vue({
     }
   },
   mixins: [mixin],
-})
+});
