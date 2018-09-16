@@ -4,9 +4,8 @@ import './cart_trade.css';
 import './cart.css';
 
 import Vue from 'vue';
-import axios from 'axios';
 import mixin from 'js/mixin'
-import url from 'js/api';
+import Cart from 'js/cartService';
 
 import Velocity from 'velocity-animate';
 
@@ -93,7 +92,7 @@ var cartApp = new Vue({
   },
   methods: {
     getCartList() {
-      axios.post(url.cartList).then(res => {
+      Cart.getList().then(res => {
         const list = res.data.cartList;
         list.forEach(shop => {
           shop.checked = true;
@@ -134,29 +133,20 @@ var cartApp = new Vue({
           item.editing = false;
           item.editMsg = item.editing ? '' : '编辑';
         }
-      })
+      });
       this.editingShop = shop.editing ? shop : null;
       this.editingShopIndex = shop.editing ? shopIndex : -1;
     },
     reduceGoods(goods) {
       if (goods.number === 1) return;
-      axios.post(url.cartReduce, {
-        id: goods.id,
-        number: 1,
-      }).then(res => {
-        if (res.data.status === 200) {
-          goods.number--;
-        }
+
+      Cart.reduce(goods.id).then(res => {
+        goods.number--;
       })
     },
     addGoods(goods) {
-      axios.post(url.cartAdd, {
-        id: goods.id,
-        number: 1,
-      }).then(res => {
-        if (res.data.status === 200) {
-          goods.number++;
-        }
+      Cart.add(goods.id).then(res => {
+        goods.number++;
       })
     },
     removeGoods(shop, goods, shopIndex, goodsIndex) {
@@ -177,46 +167,37 @@ var cartApp = new Vue({
       let {removeMsg, cartList, removeList, removeShop} = this;
       if(removeMsg === '确定要删除该商品吗？') {
         let {shop, goods, shopIndex, goodsIndex} = this.removeData;
-        axios.post(url.cartRemove, {
-          id: goods.id,
-        }).then(res => {
-          console.log(res)
-          if (res.data.status === 200) {
-            shop.goodsList.splice(goodsIndex, 1);
-            if(!shop.goodsList.length) {
-              cartList.splice(shopIndex, 1);
-              removeShop()
-            }
-            this.removePopup = false;
+        Cart.remove(goods.id).then(res => {
+          shop.goodsList.splice(goodsIndex, 1);
+          if(!shop.goodsList.length) {
+            cartList.splice(shopIndex, 1);
+            removeShop()
           }
-        })
+          this.removePopup = false;
+        });
       } else {
         let ids = [];
         removeList.forEach(goods => {
           ids.push(goods.id);
-        })
-        axios.post(url.cartRemove, {
-          ids
-        }).then(res => {
-          if(res.data.status === 200) {
-            let arr = [];
-            this.editingShop.goodsList.forEach(goods => {
-              let index = removeList.findIndex(item => {
-                return item.id === goods.id;
-              })
-              if(index === -1) {
-                arr.push(goods);
-              }
-            });
-            if(arr.length) {
-              this.editingShop.goodsList = arr;
-            } else {
-              this.cartList.splice(this.editingShopIndex, 1);
-              this.removeShop();
+        });
+        Cart.remove(ids).then(res => {
+          let arr = [];
+          this.editingShop.goodsList.forEach(goods => {
+            let index = removeList.findIndex(item => {
+              return item.id === goods.id;
+            })
+            if(index === -1) {
+              arr.push(goods);
             }
-            this.removePopup = false;
+          });
+          if(arr.length) {
+            this.editingShop.goodsList = arr;
+          } else {
+            this.cartList.splice(this.editingShopIndex, 1);
+            this.removeShop();
           }
-        })
+          this.removePopup = false;
+        });
       }
     },
     removeShop() {
